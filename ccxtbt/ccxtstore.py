@@ -97,6 +97,8 @@ class CCXTStore(with_metaclass(MetaSingleton, object)):
 
     def __init__(self, exchange, currency, config, retries, debug=False, sandbox=False):
         self.exchange = getattr(ccxt, exchange)(config)
+        # print("self.exchange",self.exchange)
+        # print("self.exchange.fetch_ticker", self.exchange.fetch_ticker('USDT/HUSD'))
         if sandbox:
             self.exchange.set_sandbox_mode(True)
         self.currency = currency

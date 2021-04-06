@@ -195,7 +195,7 @@ class CCXTBroker(with_metaclass(MetaCCXTBroker, BrokerBase)):
             ccxt_order = self.store.fetch_order(oID, o_order.data.p.dataname)
             
             # Check for new fills
-            if 'trades' in ccxt_order:
+            if 'trades' in ccxt_order and ccxt_order['trades'] is not None:
                 for fill in ccxt_order['trades']:
                     if fill not in o_order.executed_fills:
                         o_order.execute(fill['datetime'], fill['amount'], fill['price'], 
@@ -222,7 +222,7 @@ class CCXTBroker(with_metaclass(MetaCCXTBroker, BrokerBase)):
         created = int(data.datetime.datetime(0).timestamp()*1000)
         # Extract CCXT specific params if passed to the order
         params = params['params'] if 'params' in params else params
-        params['created'] = created  # Add timestamp of order creation for backtesting
+        # params['created'] = created  # Add timestamp of order creation for backtesting
         ret_ord = self.store.create_order(symbol=data.p.dataname, order_type=order_type, side=side,
                                           amount=amount, price=price, params=params)
 
